@@ -10,7 +10,11 @@ mod jwt;
 mod services;
 
 async fn index() -> actix_web::Result<actix_files::NamedFile> {
-    let file = actix_files::NamedFile::open("public/index.html")?;
+    let file = if cfg!(debug_assertions) {
+        actix_files::NamedFile::open("../web/public/index.html")?
+    } else {
+        actix_files::NamedFile::open("public/index.html")?
+    };
 
     Ok(file)
 }
@@ -69,7 +73,11 @@ async fn main() -> std::io::Result<()> {
             .service(services::post::edit::languages::service)
             .service(services::post::translate::languages::service)
             .service(services::post::translate::service)
-            .service(actix_files::Files::new("/dist", "public/dist"))
+            .service(if cfg!(debug_assertions) {
+                actix_files::Files::new("/dist", "../web/public/dist")
+            } else {
+                actix_files::Files::new("/dist", "public/dist")
+            })
             .default_service(web::route().to(index))
     })
     .bind(("0.0.0.0", 3000))?
