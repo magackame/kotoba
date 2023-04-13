@@ -42,11 +42,11 @@ You will need:
 9. `mkdir kotoba-app`
 10. `cp -r kotoba/web/public kotoba-app/public`
 11. `cp kotoba/server/.env kotoba-app/.env`
-12. `cp kotoba/server/target/release/kotoba kotoba-app/kotoba`
+12. `cp kotoba/server/target/release/server kotoba-app/server`
 
 You now have a working application in `kotoba-app`
 
-Just go `cd kotoba-app` and `./kotoba`
+Just go `cd kotoba-app` and `./server`
 
 Open a browser and go to `localhost:3000`
 
