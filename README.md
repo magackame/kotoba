@@ -35,11 +35,14 @@ You will need:
     - MySQL must not contain a db named `kotoba`
     - Substitute `user` with MySQL username (This user must be able to create databases/tables)
     - Enter the user's password when prompted to
-6. `cargo build --release`
-7. `cd ../..`
-8. `mkdir kotoba-app`
-9. `cp -r kotoba/web/public kotoba-app/public`
-10. `cp kotoba/server/target/release/kotoba kotoba-app/kotoba`
+6. `cp dotenv-example .env`
+    - In `export DATABASE_URL=mysql://user:password@localhost:3306/kotoba` substitute `user` and `password` with your MySQL credentials
+7. `cargo build --release`
+8. `cd ../..`
+9. `mkdir kotoba-app`
+10. `cp -r kotoba/web/public kotoba-app/public`
+11. `cp kotoba/server/.env kotoba-app/.env`
+12. `cp kotoba/server/target/release/kotoba kotoba-app/kotoba`
 
 You now have a working application in `kotoba-app`
 
