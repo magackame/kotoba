@@ -4,5 +4,6 @@ web/elm-stuff
 web/node_modules
 web/public/dist
 
+server/public
 server/target
 server/.env
