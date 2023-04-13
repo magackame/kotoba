@@ -92,10 +92,6 @@ update : Request -> Msg -> Model -> ( Model, Cmd Msg )
 update req msg model =
     case msg of
         GotLocalStorage localStorage ->
-            let
-                debug =
-                    Debug.log "GotLocalStorage" localStorage
-            in
             ( { model | localStorage = localStorage }, Cmd.none )
 
         Reauth ->

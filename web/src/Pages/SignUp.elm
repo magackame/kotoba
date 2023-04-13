@@ -225,8 +225,7 @@ update msg model =
                             ( { model | status = Success () }, Effect.fromCmd <| Nav.pushUrl model.key "/sign-in" )
 
                 Err _ ->
-                    Debug.log "ERROR"
-                        ( { model | status = Error ServerError }, Effect.none )
+                    ( { model | status = Error ServerError }, Effect.none )
 
 
 

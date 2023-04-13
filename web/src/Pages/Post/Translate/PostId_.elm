@@ -84,9 +84,6 @@ update postId shared msg model =
 
                 Err error ->
                     let
-                        debug =
-                            Debug.log "ERROR" error
-
                         postFormModel =
                             model.postFormModel
 
