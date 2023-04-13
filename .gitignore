@@ -1,0 +1,8 @@
+web/.DS_Store
+web/.elm-spa
+web/elm-stuff
+web/node_modules
+web/public/dist
+
+server/target
+server/.env

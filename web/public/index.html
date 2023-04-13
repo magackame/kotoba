@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+      @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@500&family=Noto+Sans+JP:wght@500&family=Noto+Sans:wght@500&display=swap');
+
+      * {
+        font-family: 'Comfortaa', 'Noto Sans', 'Noto Sans JP', Serif;
+        overflow-wrap: anywhere;
+      }
+
+      body {
+        background-color: rgb(38, 38, 38);
+      }
+  </style>
+</head>
+<body>
+  <script src="/dist/elm.js"></script>
+  <script>
+    const storageName = 'storage'
+
+    var app = Elm.Main.init({
+      flags: JSON.parse(localStorage.getItem(storageName))
+    })
+
+    app.ports.setLocalStorage.subscribe((storage) => {
+      localStorage.setItem(storageName, JSON.stringify(storage))
+      app.ports.getLocalStorage.send(storage)
+    })
+
+    app.ports.scrollTo.subscribe((id) => {
+      const element = document.getElementById(id)
+
+      element.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" })
+    })
+
+    app.ports.triggerRetry.subscribe((_) => {
+      app.ports.retry.send(null)
+    })
+
+    var endOfPageActive = true
+
+    document.onscroll = () => {
+      if (endOfPageActive) {
+        if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight) {
+          app.ports.endOfPageReached.send(null) 
+
+          endOfPageActive = false
+          setTimeout(() => endOfPageActive = true, 500)
+        }
+      }
+    }
+  </script>
+</body>
+</html>
