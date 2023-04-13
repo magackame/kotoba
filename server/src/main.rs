@@ -69,8 +69,8 @@ async fn main() -> std::io::Result<()> {
             .service(services::post::edit::languages::service)
             .service(services::post::translate::languages::service)
             .service(services::post::translate::service)
-            .route("/sign-up", web::get().to(index))
-            .service(actix_files::Files::new("/", "public").show_files_listing())
+            .service(actix_files::Files::new("/dist", "public/dist"))
+            .default_service(web::route().to(index))
     })
     .bind(("0.0.0.0", 3000))?
     .run()
