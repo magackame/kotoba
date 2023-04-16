@@ -2,7 +2,11 @@ use crate::db::id::Id;
 use crate::error::Error;
 use crate::jwt;
 use crate::State;
-use actix_web::{post, web, HttpResponse};
+use actix_web::{
+    post,
+    web::{Data, Json},
+    HttpResponse,
+};
 use serde::{Deserialize, Serialize};
 
 mod db;
@@ -23,11 +27,9 @@ pub enum Response {
 
 #[post("/api/user/fetch")]
 pub async fn service(
-    state: web::Data<State>,
-    request: web::Json<Request>,
+    state: Data<State>,
+    Json(request): Json<Request>,
 ) -> Result<HttpResponse, Error> {
-    let request = request.0;
-
     let fetcher_user_id = match jwt::get_fetcher_user_id(&state.jwt_private_key, &request.token) {
         Ok(fetcher_user_id) => fetcher_user_id,
         Err(_) => return Ok(HttpResponse::Ok().json(Response::Unauthorized)),

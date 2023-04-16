@@ -1,7 +1,11 @@
 use crate::db::page::Page;
 use crate::error::Error;
 use crate::State;
-use actix_web::{post, web, HttpResponse};
+use actix_web::{
+    post,
+    web::{Data, Json},
+    HttpResponse,
+};
 use serde::Deserialize;
 
 mod db;
@@ -16,11 +20,9 @@ pub struct Request {
 
 #[post("/api/user/search")]
 pub async fn service(
-    state: web::Data<State>,
-    request: web::Json<Request>,
+    state: Data<State>,
+    Json(request): Json<Request>,
 ) -> Result<HttpResponse, Error> {
-    let request = request.0;
-
     let page = Page::new(request.limit, request.offset);
 
     let page = User::find(&state.db_pool, &request.query, page).await?;

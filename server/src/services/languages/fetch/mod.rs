@@ -1,6 +1,10 @@
 use crate::error::Error;
 use crate::State;
-use actix_web::{post, web, HttpResponse};
+use actix_web::{
+    post,
+    web::{Data, Json},
+    HttpResponse,
+};
 use serde::Deserialize;
 
 mod db;
@@ -13,11 +17,9 @@ pub struct Request {
 
 #[post("/api/languages/fetch")]
 pub async fn service(
-    state: web::Data<State>,
-    request: web::Json<Request>,
+    state: Data<State>,
+    Json(request): Json<Request>,
 ) -> Result<HttpResponse, Error> {
-    let request = request.0;
-
     let languages = find(&state.db_pool, &request.query).await?;
 
     Ok(HttpResponse::Ok().json(languages))

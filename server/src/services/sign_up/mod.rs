@@ -1,7 +1,11 @@
 use crate::db::user::handle::Handle;
 use crate::error::Error;
 use crate::State;
-use actix_web::{post, web, HttpResponse};
+use actix_web::{
+    post,
+    web::{Data, Json},
+    HttpResponse,
+};
 use argon2::{
     password_hash::{rand_core::OsRng, PasswordHasher, SaltString},
     Argon2,
@@ -30,11 +34,9 @@ pub enum Response {
 
 #[post("/api/sign-up")]
 pub async fn service(
-    state: web::Data<State>,
-    request: web::Json<Request>,
+    state: Data<State>,
+    Json(request): Json<Request>,
 ) -> Result<HttpResponse, Error> {
-    let request = request.0;
-
     if User::exists_by_handle(&state.db_pool, &request.handle).await? {
         return Ok(HttpResponse::Ok().json(Response::HandleAlreadyTaken));
     }

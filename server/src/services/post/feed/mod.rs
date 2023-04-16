@@ -6,7 +6,11 @@ use crate::db::tag::fetch_user_tag_ids;
 use crate::error::Error;
 use crate::jwt;
 use crate::State;
-use actix_web::{post, web, HttpResponse};
+use actix_web::{
+    post,
+    web::{Data, Json},
+    HttpResponse,
+};
 use serde::{Deserialize, Serialize};
 
 mod db;
@@ -42,11 +46,9 @@ pub enum Response {
 
 #[post("/api/post/feed")]
 pub async fn service(
-    state: web::Data<State>,
-    request: web::Json<Request>,
+    state: Data<State>,
+    Json(request): Json<Request>,
 ) -> Result<HttpResponse, Error> {
-    let request = request.0;
-
     let (fetcher_language_ids, fetcher_tag_ids) = match request.preferences {
         Preferences::Unauthorized {
             language_ids,

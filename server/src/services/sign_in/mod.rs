@@ -4,7 +4,11 @@ use crate::db::user::update_retoken;
 use crate::error::Error;
 use crate::jwt;
 use crate::State;
-use actix_web::{post, web, HttpResponse};
+use actix_web::{
+    post,
+    web::{Data, Json},
+    HttpResponse,
+};
 use argon2::{
     password_hash::{PasswordHash, PasswordVerifier},
     Argon2,
@@ -34,11 +38,9 @@ pub enum Response {
 
 #[post("/api/sign-in")]
 pub async fn service(
-    state: web::Data<State>,
-    request: web::Json<Request>,
+    state: Data<State>,
+    Json(request): Json<Request>,
 ) -> Result<HttpResponse, Error> {
-    let request = request.0;
-
     let user = match User::fetch_by_email(&state.db_pool, &request.email).await? {
         Some(user) => user,
         None => {
