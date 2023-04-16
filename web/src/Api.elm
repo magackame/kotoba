@@ -3,9 +3,18 @@ module Api exposing (encodeMaybe, pfpUrl, prefix)
 import Json.Encode as E
 
 
+debug : Bool
+debug =
+    True
+
+
 prefix : String
 prefix =
-    "/api"
+    if debug then
+        "http://localhost:3000/api"
+
+    else
+        "/api"
 
 
 pfpUrl : Maybe String -> String
