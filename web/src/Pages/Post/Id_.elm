@@ -6,9 +6,9 @@ import Api.Post.Bookmarks as PostBookmarks
 import Api.Post.Comments.Create as PostCommentsCreate
 import Api.Post.Comments.Fetch as PostCommentsFetch
 import Api.Post.Fetch as PostFetch
+import Api.Post.Translation exposing (Translation)
 import Api.Post.Translations as PostTranslations
 import Api.SignIn exposing (User(..), getToken)
-import Api.Translation exposing (Translation)
 import Css exposing (..)
 import Css.Transitions as Transitions
 import Dict

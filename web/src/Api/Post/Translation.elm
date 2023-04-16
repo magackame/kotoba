@@ -1,4 +1,4 @@
-module Api.Translation exposing (Translation, decoder)
+module Api.Post.Translation exposing (Translation, decoder)
 
 import Json.Decode as D
 

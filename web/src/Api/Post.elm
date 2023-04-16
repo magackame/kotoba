@@ -1,6 +1,6 @@
 module Api.Post exposing (Meta, Post, contentMaxLen, decoder, descriptionMaxLen, metaDecoder, tagMaxLen, tagsMaxAmount, tagsMinAmount, titleMaxLen)
 
-import Api.Translation as Translation exposing (Translation)
+import Api.Post.Translation as Translation exposing (Translation)
 import Api.User as User
 import Json.Decode as D
 import Json.Decode.Pipeline as DP

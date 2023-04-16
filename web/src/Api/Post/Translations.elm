@@ -1,8 +1,7 @@
 module Api.Post.Translations exposing (Request, request)
 
-
 import Api
-import Api.Translation as Translation exposing (Translation)
+import Api.Post.Translation as Translation exposing (Translation)
 import Http
 import Json.Decode as D
 import Json.Encode as E
@@ -13,7 +12,8 @@ type alias Request =
     }
 
 
-type alias Response = List Translation
+type alias Response =
+    List Translation
 
 
 request : Request -> (Result Http.Error Response -> msg) -> Cmd msg
