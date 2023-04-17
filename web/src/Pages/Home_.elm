@@ -26,7 +26,7 @@ import Shared
 import Shared.View.Layout exposing (viewMenu)
 import Shared.View.Post exposing (viewPosts)
 import Shared.View.PostedBy exposing (smallTextSpan, viewPostedBy, viewPostedByProfilePicture)
-import Shared.View.Sign exposing (inputStyle)
+import Shared.View.Sign exposing (inputStyle, messageSpan)
 import Shared.View.Tags exposing (tagStyle, viewTags)
 import Shared.View.TileButtons exposing (viewTileButtons)
 import Status exposing (Status(..))
@@ -299,22 +299,16 @@ view shared model =
                                 (List.map (viewUser shared) people)
                     , case model.status of
                         Idle ->
-                            text "1"
+                            text ""
 
                         Loading ->
-                            text "LOADING"
+                            messageSpan shared <| loadingText shared.language
 
                         Success _ ->
-                            text "SUCCESS"
+                            text ""
 
                         Error error ->
-                            span
-                                [ css
-                                    [ fontSize shared.theme.largeFontSize
-                                    , color shared.theme.mainFontColor
-                                    ]
-                                ]
-                                [ text <| translateError shared.language error ]
+                            messageSpan shared <| translateError shared.language error
                     ]
                 ]
             ]
@@ -536,3 +530,13 @@ translateError language error =
 
                 Ukrainian ->
                     "Помилка на сервері"
+
+
+loadingText : Language -> String
+loadingText language =
+    case language of
+        English ->
+            "Loading..."
+
+        Ukrainian ->
+            "Завантажуємо..."
