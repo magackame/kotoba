@@ -1,9 +1,15 @@
-module Api.Post exposing (Meta, Post, contentMaxLen, decoder, descriptionMaxLen, metaDecoder, tagMaxLen, tagsMaxAmount, tagsMinAmount, titleMaxLen)
+module Api.Post exposing (Meta, Post, contentMaxLen, decoder, descriptionMaxLen, metaDecoder, statusDecoder, tagMaxLen, tagsMaxAmount, tagsMinAmount, titleMaxLen)
 
 import Api.Post.Translation as Translation exposing (Translation)
 import Api.User as User
 import Json.Decode as D
 import Json.Decode.Pipeline as DP
+
+
+type Status
+    = Pending
+    | Approved
+    | Denied
 
 
 type alias Meta =
@@ -64,6 +70,29 @@ decoder =
         |> DP.required "posted_at" D.int
         |> DP.required "translated_at" D.int
         |> DP.required "is_bookmarked" D.bool
+
+
+statusDecoder : D.Decoder Status
+statusDecoder =
+    D.andThen
+        statusInnerDecoder
+        (D.field "tag" D.string)
+
+
+statusInnerDecoder : String -> D.Decoder Status
+statusInnerDecoder tag =
+    case tag of
+        "Pending" ->
+            D.succeed Pending
+
+        "Approved" ->
+            D.succeed Approved
+
+        "Denied" ->
+            D.succeed Denied
+
+        _ ->
+            D.fail <| "Encountered unknown tag `" ++ tag ++ "` while decoding Post.Status"
 
 
 titleMaxLen : Int
