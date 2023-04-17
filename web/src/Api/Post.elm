@@ -1,9 +1,10 @@
-module Api.Post exposing (Meta, Post, Status(..), contentMaxLen, decoder, descriptionMaxLen, metaDecoder, statusDecoder, tagMaxLen, tagsMaxAmount, tagsMinAmount, titleMaxLen)
+module Api.Post exposing (Meta, Post, Status(..), contentMaxLen, decoder, descriptionMaxLen, encodeStatus, metaDecoder, statusDecoder, tagMaxLen, tagsMaxAmount, tagsMinAmount, titleMaxLen)
 
 import Api.Post.Translation as Translation exposing (Translation)
 import Api.User as User
 import Json.Decode as D
 import Json.Decode.Pipeline as DP
+import Json.Encode as E
 
 
 type Status
@@ -77,6 +78,25 @@ statusDecoder =
     D.andThen
         statusInnerDecoder
         (D.field "tag" D.string)
+
+
+encodeStatus : Status -> E.Value
+encodeStatus status =
+    let
+        tag =
+            case status of
+                Pending ->
+                    "Pending"
+
+                Approved ->
+                    "Approved"
+
+                Denied ->
+                    "Denied"
+    in
+    E.object
+        [ ( "tag", E.string tag )
+        ]
 
 
 statusInnerDecoder : String -> D.Decoder Status
