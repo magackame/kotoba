@@ -1,4 +1,4 @@
-module Api.Post exposing (Meta, Post, contentMaxLen, decoder, descriptionMaxLen, metaDecoder, statusDecoder, tagMaxLen, tagsMaxAmount, tagsMinAmount, titleMaxLen)
+module Api.Post exposing (Meta, Post, Status(..), contentMaxLen, decoder, descriptionMaxLen, metaDecoder, statusDecoder, tagMaxLen, tagsMaxAmount, tagsMinAmount, titleMaxLen)
 
 import Api.Post.Translation as Translation exposing (Translation)
 import Api.User as User
