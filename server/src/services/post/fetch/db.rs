@@ -37,10 +37,13 @@ impl Post {
     ) -> Result<Option<Self>> {
         let fetcher_user_id = fetcher_user_id.unwrap_or(0);
 
-        let raw_post = match RawPost::fetch_by_post_content_id(db_pool, post_content_id).await? {
-            Some(raw_post) => raw_post,
-            None => return Ok(None),
-        };
+        let raw_post =
+            match RawPost::fetch_by_post_content_id(db_pool, fetcher_user_id, post_content_id)
+                .await?
+            {
+                Some(raw_post) => raw_post,
+                None => return Ok(None),
+            };
 
         let translations = Translation::fetch_by_post_id(db_pool, raw_post.id).await?;
         let tags = fetch_tags_by_post_content_id(db_pool, raw_post.post_content_id).await?;
@@ -104,6 +107,7 @@ struct RawPost {
 impl RawPost {
     async fn fetch_by_post_content_id(
         db_pool: &MySqlPool,
+        fetcher_user_id: Id,
         post_content_id: Id,
     ) -> Result<Option<Self>> {
         sqlx::query_as!(
@@ -132,10 +136,14 @@ impl RawPost {
                 LEFT JOIN files as files_posted_by ON users_posted_by.profile_picture_file_id = files_posted_by.id
                 JOIN users as users_translated_by ON post_contents.translated_by = users_translated_by.id
                 LEFT JOIN files as files_translated_by ON users_translated_by.profile_picture_file_id = files_translated_by.id
-            WHERE status = ? AND post_contents.id = ?
+            WHERE
+                post_contents.id = ?
+                AND (status = ? OR posted_by = ? OR translated_by = ?)
             ",
-            Status::Approved.as_str(),
             post_content_id,
+            Status::Approved.as_str(),
+            fetcher_user_id,
+            fetcher_user_id
         )
         .fetch_optional(db_pool)
         .await
