@@ -73,6 +73,7 @@ async fn main() -> std::io::Result<()> {
             .service(services::post::edit::languages::service)
             .service(services::post::translate::languages::service)
             .service(services::post::translate::service)
+            .service(services::user::translations::service)
             .service(if cfg!(debug_assertions) {
                 actix_files::Files::new("/dist", "../web/public/dist")
             } else {
