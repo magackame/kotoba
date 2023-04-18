@@ -1,8 +1,11 @@
+use serde::{Deserialize, Serialize};
+
 pub const STATUS_PENDING: &'static str = "Pending";
 pub const STATUS_APPROVED: &'static str = "Approved";
 pub const STATUS_DENIED: &'static str = "Denied";
 
-#[derive(Debug, sqlx::Type)]
+#[derive(Debug, Copy, Clone, Deserialize, Serialize, sqlx::Type)]
+#[serde(tag = "tag")]
 pub enum Status {
     Pending,
     Approved,
