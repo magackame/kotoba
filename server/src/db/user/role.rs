@@ -64,6 +64,13 @@ impl Role {
         }
     }
 
+    pub fn can_manage_translations(&self) -> bool {
+        match self {
+            Self::Admin | Self::Mod | Self::Member => true,
+            _ => false,
+        }
+    }
+
     pub fn can_comment(&self) -> bool {
         match self {
             Self::Admin | Self::Mod | Self::Member => true,

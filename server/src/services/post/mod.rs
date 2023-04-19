@@ -6,3 +6,4 @@ pub mod edit;
 pub mod feed;
 pub mod fetch;
 pub mod translate;
+pub mod translations;
