@@ -3,6 +3,8 @@ use actix_web::{get, web, App, HttpServer, Responder};
 use dotenv::dotenv;
 use jwt_simple::prelude::HS256Key;
 use sqlx::mysql::{MySqlPool, MySqlPoolOptions};
+use tracing::info;
+use tracing_subscriber;
 
 mod db;
 mod error;
@@ -26,6 +28,8 @@ pub struct State {
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
+    tracing_subscriber::fmt::init();
+
     dotenv().expect("Failed to load `.env` file");
 
     let connection_string =
