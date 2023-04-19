@@ -9,6 +9,7 @@ use sqlx::Result;
 
 #[derive(Debug, Serialize)]
 pub struct Translation {
+    pub post_id: Id,
     pub post_content_id: Id,
     pub language_id: Id,
     pub language: String,
@@ -44,6 +45,7 @@ impl Translation {
 impl From<RawTranslation> for Translation {
     fn from(raw: RawTranslation) -> Self {
         Self {
+            post_id: raw.post_id,
             post_content_id: raw.post_content_id,
             language_id: raw.language_id,
             language: raw.language,
@@ -70,6 +72,7 @@ impl From<RawTranslation> for Translation {
 
 #[derive(Debug)]
 pub struct RawTranslation {
+    pub post_id: Id,
     pub post_content_id: Id,
     pub language_id: Id,
     pub language: String,
@@ -115,6 +118,7 @@ impl RawTranslation {
             Self,
             "
             SELECT
+                posts.id AS post_id,
                 post_contents.id AS post_content_id,
                 post_contents.language_id,
                 languages.name AS language,
@@ -162,6 +166,7 @@ impl RawTranslation {
             Self,
             "
             SELECT
+                posts.id AS post_id,
                 post_contents.id AS post_content_id,
                 post_contents.language_id,
                 languages.name AS language,
